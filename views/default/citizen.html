@@ -1,0 +1,30 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<center style="background-color: #333; color:white; padding:30px">
+	<h1>{{=c.name}}</h1>
+	{{if auth.user.id == c.id:}}<h3>(this is you)</h3>{{pass}}
+</center>
+{{end}}
+
+
+<h2>Holds {{=c.nquanta()}} quanta</h2>
+{{if c.rating != None:}}
+	<h3>Citizen rating: {{="{:.2f}".format(c.rating)}}</h3>
+{{else:}}
+	<h3>(Citizen unrated)</h3>
+{{pass}}
+
+
+<!--<div style="float:left; margin:20px">-->
+<!--<h3 style="margin-bottom:20px">Actions</h3>-->
+<!--<p style="font-weight:bold; font-size:120%">Rename:</p>-->
+<!--</div>-->
+<div style="float:left; margin:20px">
+<h3 style="margin-bottom:20px">{{=c.name}}'s quanta</h3>
+{{=c.make_quanta_table()}}
+</div>
+{{pass}}
+
+
+

@@ -1,0 +1,21 @@
+{{extend 'layout.html'}}
+
+
+<script>
+	jQuery(document).ready(function() {
+		jQuery("time.timeago").timeago();
+	});
+</script>
+
+
+{{block header}}
+<center style="background-color: #333; color:white; padding:30px">
+	<h1>A history of all pings</h1>
+</center>
+{{end}}
+
+{{=grid}}
+{{pass}}
+
+
+

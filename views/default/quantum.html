@@ -1,0 +1,57 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<center id="title-bar" style="background-color: #333; color:white; padding:30px">
+	{{nickname = "q{}".format(qid)}}
+	{{if name: nickname = "{} (q{})".format(name, qid)}}
+	<h1>Narrative of {{=nickname}}</h1>
+</center>
+{{end}}
+
+<script>
+	jQuery(document).ready(function() {
+		jQuery("time.timeago").timeago();
+	});
+</script>
+
+{{npings=q.get_npings()}}
+{{timesafe = "time" if npings == 1 else "times"}}
+{{q.update_rating()}}
+
+<h2>Held by {{=q.get_holder_name()}}</h2>
+{{if q.rating != None:}}
+	<h3>Quantum rating: {{="{:.2f}".format(q.rating)}}</h3>
+{{else:}}
+	<h3>(Quantum unrated)</h3>
+{{pass}}
+<p style="text-align:left;">Created by {{=q.get_mother_name()}}{{if q.created:}} <time class="timeago" datetime="{{=q.created}} +0000">{{=q.created}}</time>{{pass}}.<br>Pinged {{=npings}} {{=timesafe}}.{{if npings > 0:}}<br>Last pinged <time class="timeago" datetime="{{=q.stamp}} +0000">{{=q.stamp}}</time>.{{pass}}</p>
+
+<div style="float:left; margin:20px">
+<h3 style="margin-bottom:20px">Narrative</h3>
+{{=tables["pings"]}}
+{{if tables["names"]:}}
+	<br><br>
+	<h3 style="margin-bottom:20px">Previous names</h3>
+	{{=tables["names"]}}
+{{pass}}
+</div>
+<div style="float:left; margin:20px">
+{{if q.holder == auth.user.id:}}
+	<h3 style="margin-bottom:20px">Actions</h3>
+	
+	<p style="font-weight:bold; font-size:120%">Rename:</p>
+	{{=form_rename}}<br>
+	
+	<p style="font-weight:bold; font-size:120%">Ping this quantum:</p>
+	{{=form_send}}<br>
+{{pass}}
+</div>
+{{pass}}
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#send-ping").show();
+});
+</script>

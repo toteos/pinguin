@@ -1,0 +1,93 @@
+{{extend 'layout.html'}}
+
+
+<script>
+	jQuery(document).ready(function() {
+		jQuery("time.timeago").timeago();
+	});
+</script>
+
+{{block header}}
+<center style="background-color: #333; color:white; padding:30px">
+	{{if not auth.user:}}
+	<h1>pinguin.fish</h1>
+	{{else:}}
+	<h1>{{=auth.user.username}}</h1>
+	{{pass}}
+</center>
+{{end}}
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#send-ping").hide();
+	$(".form-send-trigger").click(function(event){
+<!--		$(".form-send-trigger").closest("tr").css({border:"none"})-->
+<!--		$(this).closest("tr").css({"background-color":"#F5F5F5;"})-->
+		$("#send-ping").css({position:"absolute", top:$(this).offset().top - 182 + "px", left:$(this).offset().left + 35 + "px"});
+		$("#send-ping #no_table_pingee").attr("value", $(this).data("pinger"));
+		$("#send-ping #no_table_qid").attr("value", $(this).data("qid"));
+<!--		$("#send-ping #no_table_qid").prop("disabled", true);-->
+<!--		$("#send-ping div.checkbox").prop("checked", Math.random() >= 0.5);-->
+		$("#send-ping").show();
+<!--		$(this).text($(this).data("qid"));-->
+	});
+});
+</script>
+
+<script>
+	$( function() {
+		$("#tabs").tabs();
+		$("a.ui-tabs-anchor").click(function(){
+			$("#send-ping").hide();
+		});
+	});
+	
+</script>
+
+
+
+
+{{if not auth.user:}}
+{{if 'message' in globals():}}
+<h2>{{=message}}</h2>
+{{pass}}
+{{else:}}
+{{if npings >= 0:}}
+{{pingstr = "quantum" if npings == 1 else "quanta"}}
+<h2 style="text-align:left">You have {{=npings}} {{=pingstr}}!</h2><br>
+<h2 style="text-align:left">Your rating is {{="{:.2f}".format(me.rating)}}</h2><br>
+{{pass}}
+<div style="float:left; margin:20px">
+ 
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">Pings received</a></li>
+		<li><a href="#tabs-2">Your quanta</a></li>
+		<li><a href="#tabs-3">Pings sent</a></li>
+	</ul>
+	<div id="tabs-1">
+		<h3 style="margin-bottom:20px">Pings you've received</h3>
+		{{=table_pings_received}}
+	</div>
+	<div id="tabs-2">
+		<h3 style="margin-bottom:20px">Your quanta</h3>
+		{{=table_quanta}}
+	</div>
+	<div id="tabs-3">
+		<h3 style="margin-bottom:20px">Pings you've sent</h3>
+		{{=table_pings_sent}}
+<!--		<div><span>coming soon ... </span></div>-->
+	</div>
+</div>
+</div>
+<div style="float:left; margin:20px">
+<!--<h3 style="margin-bottom:20px">Actions</h3>-->
+<!--<div id="form-send-popout" style="display:none;">-->
+<!--<p style="font-weight:bold; font-size:120%">Ping someone:</p>-->
+{{=form_send}}
+</div>
+{{pass}}
+
+
+
+
