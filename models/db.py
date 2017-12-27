@@ -194,7 +194,7 @@ db.define_table(
 	),
 	Field(
 		'pinger', db.auth_user,
-		represent=lambda cid, row: A(row.pinger.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else SPAN("the bank", _class="citizen-name citizen-name-bank"),
+		represent=lambda cid, row: A(row.pinger.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else SPAN("the periphery", _class="citizen-name citizen-name-periphery"),
 	),
 	Field(
 		'mother', db.auth_user,
@@ -213,7 +213,7 @@ db.define_table(
 	Field('created', type='datetime', default=request.now, represent=lambda value, row: TAG.time(value, _class="timeago", _datetime="{} +0000".format(value))),
 	Field(
 		'locked', type='boolean', default=False,
-#		represent=lambda value, row: TAG.time(value, _class="timeago", _datetime="{} +0000".format(value)),
+		represent=lambda value, row: "yes" if value else "no",
 	),
 	Field('stamp', type='datetime', default=request.now, represent=lambda value, row: TAG.time(value, _class="timeago", _datetime="{} +0000".format(value))),
 #	Field('moved', type='datetime', default=request.now),

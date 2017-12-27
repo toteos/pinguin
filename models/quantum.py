@@ -3,6 +3,9 @@ class Quantum:
 		row = None
 		row = db(db.quantum.id == qid).select(db.quantum.ALL, limitby=(0,1))
 		
+		
+		self.locked = False
+		
 		if row:
 			row = row[0]
 			self.db = db
@@ -14,12 +17,17 @@ class Quantum:
 			self.rating = row.rating
 			self.created = row.created
 			self.stamp = row.stamp
+			self.locked = row.locked
 			self.row = row
 	
 	def rename(self, name):
 		if self.holder == auth.user.id:
 			self.db(self.db.quantum.id == self.id).update(name=name)
 			self.db.quantumName.insert(quantum_id=self.id, namer=self.holder, name=name, stamp=request.now)
+	
+	def toggle_lock(self):
+		if self.holder == auth.user.id:
+			self.db(self.db.quantum.id == self.id).update(locked=not self.locked)
 	
 	def lock(self):
 		if self.holder == auth.user.id:

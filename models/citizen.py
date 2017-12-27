@@ -40,8 +40,9 @@ class Citizen:
 	
 	def send_ping(self, pingee, pid, flavor):
 		p = self.fetch_ping(pid)
-		self.db(self.db.quantum.id == p.id).update(holder=pingee.id, pinger=self.id, flavor=flavor, stamp=request.now)
-		self.db.ping.insert(quantum_id=p.id, pinger=self.id, pingee=pingee.id, flavor=flavor, stamp=request.now)
+		if not p.locked:
+			self.db(self.db.quantum.id == p.id).update(holder=pingee.id, pinger=self.id, flavor=flavor, stamp=request.now)
+			self.db.ping.insert(quantum_id=p.id, pinger=self.id, pingee=pingee.id, flavor=flavor, stamp=request.now)
 	
 	
 	def make_quanta_table(self):
@@ -59,10 +60,11 @@ class Citizen:
 #				{"header": "Actions", "body": lambda row: A(T('view'), _href=URL("default", "quantum", vars={"q_id": row.id}))},
 	#			lambda row: A(T('send'), _href=URL("default", "index", vars={"qid": row.id}), **{"_data-qid": row.id}),
 #				{"header": "Actions", "body": lambda row: FORM(TABLE(TR("", INPUT(_type="submit", _value="lock", **{"_data-qid": row.id}))))},
-				{"header": "", "body": lambda row: SPAN(T('send'), _class="form-send-trigger", **{"_data-qid": row.id, "_data-pinger": "" if not row.pinger else Citizen(db, row.pinger).name})},
+				{"header": "", "body": lambda row: SPAN(T('send'), _class="form-send-trigger", **{"_data-qid": row.id, "_data-pinger": "" if not row.pinger else Citizen(db, row.pinger).name}) if not row.locked else u"\U0001F512"},
 			] if self.id == auth.user.id else None,
 			orderby="rating DESC",
 			paginate=20,
+			selectable=[('Lock', lambda qids: [Quantum(db, qid).toggle_lock() for qid in qids], 'selectable-lock')]
 		)
 		self.db.quantum.created.readable = True
 		self.db.quantum.mother.readable = True
