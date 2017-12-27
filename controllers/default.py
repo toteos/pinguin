@@ -306,3 +306,18 @@ def debug():
 @auth.requires_login()
 def news():
 	return dict()
+	
+	
+	
+	
+def login():
+	return dict(form=auth.login())
+	
+def register():
+	return dict(form=auth.register())
+	
+def resetpass():
+	return dict(form=auth.request_reset_password())
+	
+def profile():
+	return dict(form=auth.profile())
