@@ -121,3 +121,22 @@ def make_send_form(qid=None, pinger=""):
 	
 	
 	return form
+	
+	
+	
+def make_rename_form(qid=None, cost=0):
+	form = SQLFORM.factory(
+		Field("name", "string", requires=IS_LENGTH(maxsize=50)),
+		labels={
+			"name": "Name",
+			"cost": "Quanta lost",
+		}
+	)
+	
+	form["_id"] = "rename-ping"
+#	form.element("input", _class="btn btn-primary").append(SPAN("uh"))
+	form.element("form", _id="rename-ping").append(SPAN("({} of your quanta will be pinged to the periphery.)".format(cost), _class="rename-cost"))
+#	form.element("form", _id="rename-ping").prepend(SPAN("test"))
+	
+	
+	return form

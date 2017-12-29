@@ -1,5 +1,8 @@
 class Citizen:
 	def __init__(self, db, i):
+		if not i:
+			self.name = "the periphery"
+		
 		row_auth = None
 		if isinstance(i, str):
 			row_auth = db(i.lower() == db.auth_user.username.lower()).select(db.auth_user.ALL, limitby=(0,1))
@@ -27,7 +30,16 @@ class Citizen:
 		return self.db(self.db.quantum.holder == self.id).count()
 	
 	def nquanta_unlocked(self):
-		return self.db((self.db.quantum.holder == self.id) & (not self.db.quantum.locked)).count()
+		return self.db((self.db.quantum.holder == self.id) & ((self.db.quantum.locked == None) | (self.db.quantum.locked == False))).count()
+	
+	def return_nquanta(self, n):
+		rows = self.db((self.db.quantum.holder == self.id)& ((self.db.quantum.locked == None) | (self.db.quantum.locked == False))).select(self.db.quantum.ALL, limitby=(0,n))
+		for row in rows:
+			flavor = random.randint(0,1)
+			self.db(self.db.quantum.id == row.id).update(holder=None, pinger=self.id, flavor=flavor, stamp=request.now)
+			self.db.ping.insert(quantum_id=row.id, pinger=self.id, pingee=None, flavor=flavor, stamp=request.now)
+			if not bool(self.db((self.db.quantumAttribute.quantum_id == row.id) & (self.db.quantumAttribute.name == "spent")).count()):
+				self.db.quantumAttribute.insert(quantum_id=row.id, name="spent")
 	
 	def generate_ping(self):
 		flavor = random.randint(0,1)

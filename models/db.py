@@ -190,7 +190,7 @@ db.define_table(
 	'quantum',
 	Field(
 		'holder', db.auth_user,
-		represent=lambda cid, row: A(row.holder.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid})
+		represent=lambda cid, row: A(row.holder.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else SPAN("the periphery", _class="citizen-name citizen-name-periphery"),
 	),
 	Field(
 		'pinger', db.auth_user,
@@ -267,11 +267,11 @@ db.define_table(
 	),
 	Field(
 		'pinger', db.auth_user,
-		represent=lambda cid, row: A(row.pinger.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else None,
+		represent=lambda cid, row: A(row.pinger.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else SPAN("the periphery", _class="citizen-name citizen-name-periphery"),
 	),
 	Field(
 		'pingee', db.auth_user,
-		represent=lambda cid, row: A(row.pingee.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else None,
+		represent=lambda cid, row: A(row.pingee.username, _href=URL("default", "citizen", vars={"c_id": cid}), _class="citizen-name", **{"_data-cid": cid}) if cid else SPAN("the periphery", _class="citizen-name citizen-name-periphery"),
 	),
 	Field('flavor', 'boolean', represent=lambda value, row: 1 if value else 0),
 #	Field('rating', 'double'),

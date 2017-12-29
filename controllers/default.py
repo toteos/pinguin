@@ -207,27 +207,20 @@ def quantum():
 #		db.quantumName.name.represent = rep_temp
 	else: tables["names"] = False
 	
-	
-	form_rename = SQLFORM.factory(
-		Field("name", "string", requires=IS_LENGTH(maxsize=50)),
-#		Field(
-#			"cost", "integer", default=10*db(db.quantumName.quantum_id == qid).count(),
-#			readonly=True,
-#		),
-		labels={
-			"name": "Name",
-		}
-	)
+	nnames = db(db.quantumName.quantum_id == qid).count()
+	rename_cost = 1 if nnames == 0 else 10*nnames
+	form_rename = make_rename_form(q.id, rename_cost)
 	
 	
 	form_send = make_send_form(qid=q.id, pinger="" if not q.pinger else Citizen(db, q.pinger).name)
 	
 	if form_rename.accepts(request.vars, session, formname='rename'):
-		if True:#me.nquanta() > 1000:
+		if me.nquanta_unlocked() >= rename_cost:
+			me.return_nquanta(rename_cost)
 			q.rename(form_rename.vars["name"])
 			redirect(URL("quantum", vars={"q_id": q.id}), client_side=True)
 		else:
-			response.flash = "You can't afford this!"
+			response.flash = "You don't hold enough quanta to return in order to rename this quantum!"
 	
 	
 	if form_send.accepts(request.vars, session, formname='send'):

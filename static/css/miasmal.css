@@ -59,6 +59,19 @@ center > h1 {
 
 /*FORMS*/
 
+
+#rename-ping {
+	width: 400px;
+	border: solid lightgray 2px;
+	background-color: white;
+}
+
+#rename-ping span.rename-cost {
+	display: block;
+	color: red;
+	margin: 5px;
+}
+
 .form-send-trigger {
 	color: #0275d8;
 	cursor: pointer;
