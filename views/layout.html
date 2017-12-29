@@ -92,6 +92,15 @@
 <!--          <input class="form-control mr-sm-2" type="text" placeholder="Search">-->
 <!--        </form>      -->
 		<span style="display:inline-block;padding:0.5em;margin:0 auto;color:gray;">pinguin.fish</span>
+		
+		<ul class="navbar-nav navbar-right">
+			<li class="nav-item">
+				<a class="nav-link" href="{{=URL('default', 'news')}}">News</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{=URL('default', 'information')}}">Information</a>
+			</li>
+		</ul>
         {{if 'auth' in globals():}}
         <ul class="navbar-nav navbar-right">
           <li class="nav-item dropdown">

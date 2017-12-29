@@ -26,6 +26,9 @@ class Citizen:
 	def nquanta(self):
 		return self.db(self.db.quantum.holder == self.id).count()
 	
+	def nquanta_unlocked(self):
+		return self.db((self.db.quantum.holder == self.id) & (not self.db.quantum.locked)).count()
+	
 	def generate_ping(self):
 		flavor = random.randint(0,1)
 		self.db.quantum.insert(mother=self.id, holder=self.id, flavor=flavor)
@@ -64,7 +67,7 @@ class Citizen:
 			] if self.id == auth.user.id else None,
 			orderby="rating DESC",
 			paginate=20,
-			selectable=[('Lock', lambda qids: [Quantum(db, qid).toggle_lock() for qid in qids], 'selectable-lock')]
+			selectable=[('Lock/unlock', lambda qids: [Quantum(db, qid).toggle_lock() for qid in qids], 'selectable-lock')]
 		)
 		self.db.quantum.created.readable = True
 		self.db.quantum.mother.readable = True

@@ -303,8 +303,10 @@ def email():
 def debug():
 	return dict()
 
-@auth.requires_login()
 def news():
+	return dict()
+
+def information():
 	return dict()
 	
 	

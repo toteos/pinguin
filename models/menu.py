@@ -12,7 +12,7 @@ if auth.user:
 	response.menu.append((T('History'), False, URL('default', 'history'), []))
 	response.menu.append((T('Quanta'), False, URL('default', 'quanta'), []))
 	response.menu.append((T('Citizens'), False, URL('default', 'citizens'), []))
-	response.menu.append((T('News'), False, URL('default', 'news'), []))
+#	response.menu.append((T('News'), False, URL('default', 'news'), []))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # provide shortcuts for development. you can remove everything below in production
