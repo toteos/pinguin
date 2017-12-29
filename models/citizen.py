@@ -40,6 +40,7 @@ class Citizen:
 			self.db.ping.insert(quantum_id=row.id, pinger=self.id, pingee=None, flavor=flavor, stamp=request.now)
 			if not bool(self.db((self.db.quantumAttribute.quantum_id == row.id) & (self.db.quantumAttribute.name == "spent")).count()):
 				self.db.quantumAttribute.insert(quantum_id=row.id, name="spent")
+				self.db((self.db.quantumAttribute.quantum_id == row.id) & (self.db.quantumAttribute.name == "new")).delete()
 	
 	def generate_ping(self):
 		flavor = random.randint(0,1)
