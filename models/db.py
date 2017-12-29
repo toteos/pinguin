@@ -225,6 +225,7 @@ db.quantum.id.label = "Quantum"
 db.quantum.id.represent=lambda value, row: A(row.name, _href=URL("default", "quantum", vars={"q_id": value}), _class="quantum-name", **{"_data-qid": value})
 db.executesql('CREATE INDEX IF NOT EXISTS rating_idx ON quantum (rating);')
 db.executesql('CREATE INDEX IF NOT EXISTS stamp_idx ON quantum (stamp);')
+db.quantum._after_insert.append(lambda f, id: db.quantumAttribute.insert(quantum_id=id, name="new"))
 
 db.define_table(
 	'quantumName',
@@ -236,6 +237,16 @@ db.define_table(
 	Field('name', "string"),
 	Field('stamp', type='datetime', default=request.now, represent=represent_time_ago),
 )
+
+
+db.define_table(
+	'quantumAttribute',
+	Field('quantum_id', db.quantum),
+#	Field('attribute_id', db.attributeQ),
+	Field('name', "string"),
+#	Field('stamp', type='datetime', default=request.now, represent=represent_time_ago),
+)
+
 
 db.define_table(
 	'quantumNote',

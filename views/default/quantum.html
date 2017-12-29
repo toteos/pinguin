@@ -46,6 +46,19 @@
 	{{=form_send}}<br>
 {{pass}}
 </div>
+<div style="float:left; margin:20px">
+	<h3 style="margin-bottom:20px">Attributes</h3>
+	{{rows = q.get_attributes()}}
+	{{if rows:}}
+		{{for row in rows:}}
+		{{att = quantum_attributes[row.name]}}
+			<p style="font-weight:bold; font-size:120%; margin-bottom:0;">{{=att["title"]}}</p>
+			<p style="margin-left:20px;"><i>{{=att["description"]}}</i></p>
+		{{pass}}
+	{{else:}}
+	<p>This quantum has no special attributes.</p>
+	{{pass}}
+</div>
 {{pass}}
 
 

@@ -24,6 +24,7 @@ class Quantum:
 		if self.holder == auth.user.id:
 			self.db(self.db.quantum.id == self.id).update(name=name)
 			self.db.quantumName.insert(quantum_id=self.id, namer=self.holder, name=name, stamp=request.now)
+			self.add_attribute("renamed")
 	
 	def toggle_lock(self):
 		if self.holder == auth.user.id:
@@ -48,6 +49,16 @@ class Quantum:
 	
 	def get_nnames(self):
 		return self.db(self.db.quantumName.quantum_id == self.id).count()
+	
+	def get_attributes(self):
+		return self.db(self.db.quantumAttribute.quantum_id == self.id).select(self.db.quantumAttribute.ALL)
+	
+	def add_attribute(self, att_name):
+		has_att = bool(self.db((self.db.quantumAttribute.quantum_id == self.id) & (self.db.quantumAttribute.name == att_name)).count())
+		if not has_att:
+			self.db.quantumAttribute.insert(quantum_id=self.id, name=att_name)
+		else:
+			return False
 	
 	def update_rating(self):
 		rating = get_quantum_rating(self)
