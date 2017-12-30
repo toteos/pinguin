@@ -153,6 +153,7 @@
 'License for': '软件授权',
 'Live Chat': 'Live Chat',
 'Log In': 'Log In',
+'Log in': 'Log in',
 'login': '登录',
 'Login': '登录',
 'Login to the Administrative Interface': '登录到管理员界面',

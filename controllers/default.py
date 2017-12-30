@@ -243,6 +243,7 @@ def quantum():
 def history():
 	grid = SQLFORM.smartgrid(
 		db.ping,
+		constraints={"ping": ((db.ping.pinger != None)&(db.ping.pingee != None))},
 		details=False, create=False, editable=False, deletable=False, csv=False,
 		fields=[db.ping.stamp, db.ping.quantum_id, db.ping.pinger, db.ping.pingee, db.ping.flavor],
 #		links = [
