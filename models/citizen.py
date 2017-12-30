@@ -33,7 +33,7 @@ class Citizen:
 		return self.db((self.db.quantum.holder == self.id) & ((self.db.quantum.locked == None) | (self.db.quantum.locked == False))).count()
 	
 	def return_nquanta(self, n):
-		rows = self.db((self.db.quantum.holder == self.id)& ((self.db.quantum.locked == None) | (self.db.quantum.locked == False))).select(self.db.quantum.ALL, limitby=(0,n))
+		rows = self.db((self.db.quantum.holder == self.id)& ((self.db.quantum.locked == None) | (self.db.quantum.locked == False))).select(self.db.quantum.ALL, limitby=(0,n), orderby="rating ASC, id DESC")
 		for row in rows:
 			flavor = random.randint(0,1)
 			self.db(self.db.quantum.id == row.id).update(holder=None, pinger=self.id, flavor=flavor, stamp=request.now)
