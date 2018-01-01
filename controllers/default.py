@@ -43,7 +43,6 @@ def index():
 #	db.quantum.created.readable = True
 #	db.quantum.mother.readable = True
 #	db.quantum.holder.readable = True
-	quanta_table = me.make_quanta_table()
 	npings = me.nquanta()
 	
 	
@@ -97,7 +96,7 @@ def index():
 			redirect(URL("index"), client_side=True)
 	
 	return dict(
-		table_quanta=quanta_table,
+		table_quanta=me.make_quanta_table(),
 		table_pings_sent=me.make_pings_sent_table(),
 		table_pings_received=me.make_pings_received_table(),
 		npings=npings,
@@ -244,7 +243,7 @@ def history():
 	grid = SQLFORM.smartgrid(
 		db.ping,
 		constraints={"ping": ((db.ping.pinger != None)&(db.ping.pingee != None))},
-		details=False, create=False, editable=False, deletable=False, csv=False,
+		details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 		fields=[db.ping.stamp, db.ping.quantum_id, db.ping.pinger, db.ping.pingee, db.ping.flavor],
 #		links = [
 ##			{'header': "Pinged", 'body': lambda row: TAG.time(row.stamp, _class="timeago", _datetime="{} +0000".format(row.stamp))},
@@ -260,7 +259,7 @@ def quanta():
 	db.quantum.name.readable = False
 	grid = SQLFORM.smartgrid(
 		db.quantum,
-		details=False, create=False, editable=False, deletable=False, csv=False,
+		details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 		linked_tables= [],
 #		links = [
 #			{"header": "Actions", "body": lambda row: A(T('view quantum'), _href=URL("default", "quantum", vars={"q_id": row.id}))},
@@ -275,7 +274,7 @@ def quanta():
 def citizens():
 	grid = SQLFORM.smartgrid(
 		db.citizen,
-		details=False, create=False, editable=False, deletable=False, csv=False,
+		details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 		fields=[db.citizen.user_id, db.citizen.rating],
 		linked_tables= [],
 		orderby="citizen.rating DESC",

@@ -69,7 +69,7 @@ class Citizen:
 		quanta_table = SQLFORM.smartgrid(
 			db.quantum,
 			constraints=dict(quantum=db.quantum.holder == self.id),
-			details=False, create=False, editable=False, deletable=False, csv=False,
+			details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 #			fields=[db.quantum.id],#, db.quantum.rating, db.quantum.pinger, db.quantum.flavor, db.quantum.stamp],
 			linked_tables=[],
 			links = [
@@ -79,7 +79,7 @@ class Citizen:
 				{"header": "", "body": lambda row: SPAN(T('send'), _class="form-send-trigger", **{"_data-qid": row.id, "_data-pinger": "" if not row.pinger else Citizen(db, row.pinger).name}) if not row.locked else u"\U0001F512"},
 			] if self.id == auth.user.id else None,
 			orderby="rating DESC",
-			paginate=20,
+			paginate=50,
 			selectable=[('Lock/unlock', lambda qids: [Quantum(db, qid).toggle_lock() for qid in qids], 'selectable-lock')]
 		)
 		self.db.quantum.created.readable = True
@@ -94,7 +94,7 @@ class Citizen:
 			db.ping,
 			constraints=dict(ping=db.ping.pinger == self.id),
 			fields=[db.ping.stamp, db.ping.quantum_id, db.ping.pingee, db.ping.flavor],
-			details=False, create=False, editable=False, deletable=False, csv=False,
+			details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 			links = [
 				{"header": "Actions", "body": lambda row: SPAN(T('send'), _class="form-send-trigger", **{"_data-qid": row.quantum_id, "_data-pinger": "" if not row.pingee else Citizen(db, row.pingee).name}) if row.quantum_id.holder == self.id else ""},
 			] if self.id == auth.user.id else None,
@@ -108,7 +108,7 @@ class Citizen:
 			db.ping,
 			constraints=dict(ping=db.ping.pingee == self.id),
 			fields=[db.ping.stamp, db.ping.quantum_id, db.ping.pinger, db.ping.flavor],
-			details=False, create=False, editable=False, deletable=False, csv=False,
+			details=False, create=False, editable=False, deletable=False, csv=False, searchable=False,
 			links = [
 				{"header": "Actions", "body": lambda row: SPAN(T('send'), _class="form-send-trigger", **{"_data-qid": row.quantum_id, "_data-pinger": "" if not row.pinger else Citizen(db, row.pinger).name}) if row.quantum_id.holder == self.id else ""},
 			] if self.id == auth.user.id else None,
